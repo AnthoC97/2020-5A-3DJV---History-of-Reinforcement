@@ -25,7 +25,7 @@ public class Test : MonoBehaviour
         {
             for (int y = 0; y < lineworld.A.Length; ++y)
             {
-                Pi[i, y] = 0.0f; ;
+                Pi[i, y] = 0.0f;
             }
         }
     

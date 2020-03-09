@@ -39,6 +39,10 @@ public class Algorithms
         Debug.Assert(theta > 0);
 
         float[] V = new float[S.Length];
+        for(int iv=0; iv<V.Length; ++iv)
+        {
+            V[iv] = Random.value;
+        }
         setArrayAtArray<float>(ref V, ref T, 0.0f);
         while (true) {
             float delta = 0;

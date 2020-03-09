@@ -33,8 +33,8 @@ public class LineWorld
 
         for(int i = 1; i < S.Length-1; i++)
         {
-            P[S[i], 0, S[i - 1]] = 1.0f;
-            P[S[i], 0, S[i + 1]] = 1.0f;
+            P[S[i], 0, S[i]-1] = 1.0f;
+            P[S[i], 1, S[i ]+1] = 1.0f;
         }
 
         R[1, 0, 0] = -1.0f;
