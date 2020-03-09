@@ -4,6 +4,19 @@ using UnityEngine;
 
 public class Algorithms
 {
+    float[,] create_random_uniform_policy(int state_size, int action_size)
+    {
+        float[,] temp = new float[state_size, action_size];
+        for (int i =0; i<state_size; ++i)
+        {
+            for (int y = 0; y < action_size; ++y)
+            {
+                temp[i, y] = 1.0f/action_size;
+            }
+        }
+        return temp;
+    }
+
     public void setArrayAtArray<T>(ref T[] Array, ref int[] KeyArray, T value)
     {
         foreach(int key in KeyArray)
