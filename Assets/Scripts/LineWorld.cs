@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Init
+public class LineWorld
 {
     private int[] S;
     private int[] A;
@@ -10,7 +10,7 @@ public class Init
     private float[,,] P;
     private float[,,] R;
 
-    public Init()
+    public LineWorld()
     {
         S = new int[] { 0, 1, 2, 3, 4 };
         A = new int[] { 0, 1 };
