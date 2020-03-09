@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class LineWorld
 {
-    private int[] S;
-    private int[] A;
-    private int[] T;
-    private float[,,] P;
-    private float[,,] R;
+    public int[] S { get; private set; }
+    public int[] A { get; private set; }
+    public int[] T { get; private set; }
+    public float[,,] P { get; private set; }
+    public float[,,] R { get; private set; }
 
     public LineWorld()
     {
@@ -20,14 +20,13 @@ public class LineWorld
 
         for(int i = 0; i < S.Length; i++)
         {
-            for(int j = 0; j < S.Length; j++)
+            for(int j = 0; j < A.Length; j++)
             {
                 for(int k = 0; k < S.Length; k++)
                 {
                     P[i, j, k] = 0;
                     R[i, j, k] = 0;
                 }
-
             }
         }
 

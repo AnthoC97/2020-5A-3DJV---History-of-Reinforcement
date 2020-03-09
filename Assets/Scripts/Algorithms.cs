@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Algorithms
 {
-    float[,] create_random_uniform_policy(int state_size, int action_size)
+    public static float[,] create_random_uniform_policy(int state_size, int action_size)
     {
         float[,] temp = new float[state_size, action_size];
         for (int i =0; i<state_size; ++i)
@@ -17,7 +17,7 @@ public class Algorithms
         return temp;
     }
 
-    public void setArrayAtArray<T>(ref T[] Array, ref int[] KeyArray, T value)
+    public static void setArrayAtArray<T>(ref T[] Array, ref int[] KeyArray, T value)
     {
         foreach(int key in KeyArray)
         {
@@ -25,13 +25,13 @@ public class Algorithms
         }
     }
 
-    public float[] iterative_policy_evaluation(
+    public static float[] iterative_policy_evaluation(
        int[] S,
        int[] A,
        int[] T,
        float[,,] P,
        float[,,] R,
-       int[,] Pi,
+       float[,] Pi,
        float gamma = 1.0f,
        float theta = 0.000001f)
     {
