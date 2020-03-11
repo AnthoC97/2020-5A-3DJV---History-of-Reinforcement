@@ -15,11 +15,12 @@ public class Test : MonoBehaviour
         Pi = Algorithms.create_random_uniform_policy(lineworld.S.Length, lineworld.A.Length);
         V = Algorithms.iterative_policy_evaluation(lineworld.S, lineworld.A, lineworld.T, lineworld.P, lineworld.R, Pi);
 
-        Debug.Log("Value Function de la stratégie \"random uniform\" ");
+        /*Debug.Log("Value Function de la stratégie \"random uniform\" ");
         foreach (float v in V)
         {
             Debug.Log(v);
-        }
+        }*/
+        UIDisplayator.AddVF("Value Function de la stratégie \"random uniform\"", ref V);
 
         for (int i = 0; i < lineworld.S.Length; ++i)
         {
@@ -35,12 +36,12 @@ public class Test : MonoBehaviour
 
         }
         V = Algorithms.iterative_policy_evaluation(lineworld.S, lineworld.A, lineworld.T, lineworld.P, lineworld.R, Pi);
-        Debug.Log("Value Function de la stratégie \"tout a droite\" ");
+        /*Debug.Log("Value Function de la stratégie \"tout a droite\" ");
         foreach (float v in V)
         {
             Debug.Log(v);
-        }
-
+        }*/
+        UIDisplayator.AddVF("Value Function de la stratégie \"tout a droite\"", ref V);
     }
 
     // Update is called once per frame
