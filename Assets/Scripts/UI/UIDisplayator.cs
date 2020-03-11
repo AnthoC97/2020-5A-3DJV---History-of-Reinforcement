@@ -60,6 +60,5 @@ public class UIDisplayator : MonoBehaviour
             GameObject fieldGO = GameObject.Instantiate(instance.ColumnFieldPrefab, instance.RowPanel1);
             fieldGO.GetComponentInChildren<UnityEngine.UI.Text>().text = instance.VFs[index][i].ToString();
         }
-
     }
 }
