@@ -88,6 +88,29 @@ public class Test : MonoBehaviour
                 Debug.Log("S=" + s + " A=" + a + " =" + VPi.Pi[s, a]);
             }
         }
+
+        //////////////////////////////////////////////////
+
+        float[,] Q = Algorithms.monte_carlo_control_with_exploring_starts(
+            lineworld.S, lineworld.A, lineworld.T, lineworld.step, lineworld.step_until_the_end_of_episode_and_return_transitions, out Pi, 0.99f, 5000
+        );
+
+        Debug.Log("L'action value optimale :");
+        for (int s = 0; s < lineworld.S.Length; ++s)
+        {
+            for (int a = 0; a < lineworld.A.Length; ++a)
+            {
+                Debug.Log("S:"+s+" A:"+a+" Q:"+Q[s,a]);
+            }
+        }
+        Debug.Log("La policy \"optimale\" :");
+        for (int s = 0; s < lineworld.S.Length; ++s)
+        {
+            for (int a = 0; a < lineworld.A.Length; ++a)
+            {
+                Debug.Log("S:" + s + " A:" + a + " Pi:" + Pi[s, a]);
+            }
+        }
     }
 
     // Update is called once per frame

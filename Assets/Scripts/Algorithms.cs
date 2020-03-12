@@ -8,6 +8,20 @@ public struct PairVPi
     public float[,] Pi;
 };
 
+public struct PairSARSP
+{
+    public List<int> S;
+    public List<int> A;
+    public List<float> R;
+    public List<int> SP;
+};
+
+public struct PairSR
+{
+    public int S;
+    public float R;
+};
+
 public class Algorithms
 {
     // Retourne pour chaque état un meme pourcentage de chance pour chaque action
@@ -22,6 +36,13 @@ public class Algorithms
             }
         }
         return temp;
+    }
+
+    public static bool arrayContain(int[] Array, int val)
+    {
+        foreach(int v in Array)
+            if (v == val) return true;
+        return false;
     }
 
     public static void setArrayAtArray<T>(ref T[] Array, ref int[] KeyArray, T value)
@@ -145,5 +166,89 @@ public class Algorithms
         pairVPi.V = V;
         pairVPi.Pi = Pi;
         return pairVPi;
+    }
+
+    public static float[,] monte_carlo_control_with_exploring_starts(
+       int[] S,
+       int[] A,
+       int[] T,
+       System.Func<int, int, PairSR> step_func,
+       System.Func<int, float[,], PairSARSP> step_until_the_end_and_return_transitions_func,
+       out float[,] Pi,
+       float gamma = 0.99f,
+       int nb_iter = 1000
+    ) {
+        Pi = create_random_uniform_policy(S.Length, A.Length);
+        float[,] Q = new float[S.Length, A.Length];
+        for (int s = 0; s < S.Length; ++s) {
+            for (int a = 0; a < A.Length; ++a)
+            {
+                Q[s,a] = Random.value;
+            }
+        }
+        foreach(int t in T)
+        {
+            for (int a = 0; a < A.Length; ++a)
+                Q[t, a] = 0.0f;
+        }
+        float[,] ReturnsSum = new float[S.Length, A.Length];
+        float[,] ReturnsCount = new float[S.Length, A.Length];
+
+        for (int _ = 0; _ < nb_iter; ++_) {
+            int s0 = S[Random.Range(0, S.Length)];
+
+            if (arrayContain(T, s0))
+                continue;
+
+            int a0 = A[Random.Range(0, A.Length)];
+
+            PairSR pairSR = step_func.Invoke(s0, a0);
+            PairSARSP pairSARSP = step_until_the_end_and_return_transitions_func.Invoke(pairSR.S, Pi);
+            float G = 0;
+            pairSARSP.S.Insert(0, s0);
+            pairSARSP.A.Insert(0, a0);
+            pairSARSP.R.Insert(0, pairSR.R);
+            for (int t = pairSARSP.S.Count - 1; t > 0; --t) {
+                G = pairSARSP.R[t] + gamma * G;
+                int st = pairSARSP.S[t];
+                int at = pairSARSP.A[t];
+                bool stIn = false;
+                for (int i = 0; i <= t; ++i)
+                {
+                    if (pairSARSP.S[t] == pairSARSP.S[i])
+                    {
+                        stIn = true;
+                        break;
+                    }
+                }
+                bool atIn = false;
+                for (int i = 0; i <= t; ++i)
+                {
+                    if (at == pairSARSP.A[i])
+                    {
+                        atIn = true;
+                        break;
+                    }
+                }
+                if (stIn && atIn)
+                    continue;
+                ReturnsSum[st, at] += G;
+                ReturnsCount[st, at] += 1;
+                Q[st, at] = ReturnsSum[st, at] / ReturnsCount[st, at];
+                setPiArrayValueAtState(ref Pi, st, 0.0f, A.Length);
+                float max = float.MinValue;
+                int argmax = 0;
+                for (int a = 0; a < A.Length; ++a)
+                {
+                    if (Q[st, a] > max)
+                    {
+                        max = Q[st, a];
+                        argmax = a;
+                    }
+                }
+                Pi[st, argmax] = 1.0f;
+            }
+        }
+        return Q;
     }
 }

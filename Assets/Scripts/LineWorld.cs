@@ -40,4 +40,57 @@ public class LineWorld
         R[1, 0, 0] = -1.0f;
         R[3, 1, 4] = 1.0f;
     }
+
+    public PairSR step(int s, int a) {
+        int s_p = 0;
+        float rand = Random.value;
+        float temp = 0;
+        for(int i=0; i<S.Length; ++i)
+        {
+            temp += P[s, a, i];
+            if(rand<=temp)
+            {
+                s_p = i;
+                break;
+            }
+        }
+        float r = R[s, a, s_p];
+        PairSR pairSR;
+        pairSR.S = s_p;
+        pairSR.R = r;
+        return pairSR;
+    }
+
+    public PairSARSP step_until_the_end_of_episode_and_return_transitions(int s, float[,] Pi) {
+        List<int> s_list = new List<int>();
+        List<int> a_list = new List<int>();
+        List<float> r_list = new List<float>();
+        List<int> s_p_list = new List<int>();
+        while (!Algorithms.arrayContain(T, s) && s_list.Count < S.Length * 10) {
+            int a = 0;
+            float rand = Random.value;
+            float temp = 0;
+            for (int i = 0; i < A.Length; ++i)
+            {
+                temp += Pi[s,i];
+                if (rand <= temp)
+                {
+                    a = i;
+                    break;
+                }
+            }
+            PairSR pairSR = step(s, a);
+            s_list.Add(s);
+            a_list.Add(a);
+            r_list.Add(pairSR.R);
+            s_p_list.Add(pairSR.S);
+            s = pairSR.S;
+        }
+        PairSARSP pairSARSP;
+        pairSARSP.S = s_list;
+        pairSARSP.A = a_list;
+        pairSARSP.R = r_list;
+        pairSARSP.SP = s_p_list;
+        return pairSARSP;
+    }
 }
