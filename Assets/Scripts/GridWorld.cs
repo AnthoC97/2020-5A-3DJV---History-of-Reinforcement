@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridWorld 
+public class GridWorld
 {
-    
+
     public int[] S { get; private set; } // emsemble des états
     public int[] A { get; private set; } // emsemble des actions
     public int[] T { get; private set; }
@@ -24,10 +24,15 @@ public class GridWorld
         numState = width * height;
 
         S = new int[numState];
-        A = new[] {0, 1, 2, 3};
-        T = new[] {width - 1, numState - 1};
+        A = new[] { 0, 1, 2, 3 };
+        T = new[] { width - 1, numState - 1 };
         P = new float[S.Length, A.Length, S.Length]; // Probabilité de passer dans un état donner a partir d'un état et d'une action
         R = new float[S.Length, A.Length, S.Length]; // Récompense a partir d'un état et d'une action 
+
+        for(int s=0; s<S.Length; ++s)
+        {
+            S[s] = s;
+        }
 
         foreach (int s in S)
         {
@@ -66,46 +71,24 @@ public class GridWorld
             {
                 P[s, 3, s + width] = 1.0f;
             }
+        }
 
-       
-            for (int i = 0; i < A.Length; i++)
+        for (int i = 0; i < A.Length; i++)
+        {
+            for (int j = 0; j < S.Length; j++)
             {
-                for (int j = 0; j < S.Length; j++)
-                {
-                        
-                    P[width -1, i, j] = 0.0f;
-                        
-                }
+                P[width - 1, i, j] = 0.0f;
+                P[numState - 1, i, j] = 0.0f;
             }
-            
-            for (int i = 0; i < A.Length; i++)
+        }
+
+        for (int i = 0; i < S.Length; i++)
+        {
+            for (int j = 0; j < A.Length; j++)
             {
-                for (int j = 0; j < S.Length; j++)
-                {
-                    P[numState -1, i, j] = 0.0f;
-                }
+                R[i, j, width - 1] = -5.0f;
+                R[i, j, numState - 1] = 1.0f;
             }
-            
-            for (int i = 0; i < A.Length; i++)
-            {
-                for (int j = 0; j < S.Length; j++)
-                {
-                    R[i, j, width-1] = -5.0f;
-                }
-            }
-            
-            for (int i = 0; i < A.Length; i++)
-            {
-                for (int j = 0; j < S.Length; j++)
-                {
-                    R[i, j, numState-1] = 1.0f;
-                }
-            }
-            
-            
-            
-            
-            
         }
     }
 }
