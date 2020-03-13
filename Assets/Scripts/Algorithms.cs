@@ -251,4 +251,57 @@ public class Algorithms
         }
         return Q;
     }
+
+    public float[] value_iteration(
+       int[] S,
+       int[] A,
+       int[] T,
+       float[,,] P,
+       float[,,] R,
+       float[,] Pi,
+       float gamma = 0.99f,
+       float theta = 0.000001f
+        )
+    {
+        float delta = 0f;
+        float av = 0f;
+        float[] V = new float[S.Length];
+        for(int i = 0; i < V.Length; i++)
+        {
+            V[i] = Random.value;
+        }
+        foreach(int t in T)
+        {
+            V[t] = 0;
+        }
+        while(delta < theta)
+        {
+            foreach (int s in S)
+            {
+                float v = V[s];
+                float[] action_val = new float[A.Length];
+                foreach (int a in A)
+                {
+                    foreach (int s2 in S)
+                    {
+                        av = P[s, a, s2] * (R[s, a, s2] + gamma * V[s2]);
+                        action_val[a] = av;
+                    }
+                }
+                float maxA = 0;
+                foreach (float a_val in action_val)
+                {
+                    if (maxA < a_val)
+                    {
+                        maxA = a_val;
+                    }
+                }
+                V[s] = maxA;
+                float tmp = Mathf.Abs(v - V[s]);
+                if (delta < tmp)
+                    delta = tmp;
+            }
+        }
+        return V;
+    }
 }
