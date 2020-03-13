@@ -266,15 +266,15 @@ public class Algorithms
         float delta = 0f;
         float av = 0f;
         float[] V = new float[S.Length];
-        for(int i = 0; i < V.Length; i++)
+        for (int i = 0; i < V.Length; i++)
         {
             V[i] = Random.value;
         }
-        foreach(int t in T)
+        foreach (int t in T)
         {
             V[t] = 0;
         }
-        while(delta < theta)
+        while (delta < theta)
         {
             foreach (int s in S)
             {
