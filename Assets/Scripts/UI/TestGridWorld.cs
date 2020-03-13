@@ -7,7 +7,8 @@ public enum Methods
 {
     IPE,
     PI,
-    MCES
+    MCES,
+    VI
 }
 
 public class TestGridWorld : MonoBehaviour
@@ -69,6 +70,27 @@ public class TestGridWorld : MonoBehaviour
                     {
                         caseGO.GetComponentInChildren<Text>().text += "S:" + s + " A:" + a + " Q:" + Q[s, a] + "\n";
                     }
+                }
+                break;
+            case Methods.VI:
+                Pi = new float[gridWorld.S.Length, gridWorld.A.Length];
+                for (int i = 0; i < gridWorld.S.Length; ++i)
+                {
+                    for (int y = 0; y < gridWorld.A.Length; ++y)
+                    {
+                        Pi[i, y] = 0.0f;
+                    }
+                }
+
+                for (int i = 0; i < gridWorld.S.Length; ++i)
+                {
+                    Pi[i, 1] = 1.0f;
+                }
+                V = Algorithms.value_iteration(gridWorld.S, gridWorld.A, gridWorld.T, gridWorld.P, gridWorld.R, Pi);
+                foreach (float v in V)
+                {
+                    GameObject caseGO = GameObject.Instantiate(prefabCase, gridLayout.transform);
+                    caseGO.GetComponentInChildren<Text>().text = "V=" + v;
                 }
                 break;
         }
