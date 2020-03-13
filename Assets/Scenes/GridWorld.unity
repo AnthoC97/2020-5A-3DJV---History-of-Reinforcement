@@ -577,4 +577,4 @@ MonoBehaviour:
   height: 5
   prefabCase: {fileID: 6643078823727341422, guid: bafe2689293cc8340b1a36588422e03a,
     type: 3}
-  methods: 2
+  methods: 3

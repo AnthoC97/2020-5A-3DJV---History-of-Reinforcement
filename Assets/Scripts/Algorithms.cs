@@ -252,14 +252,14 @@ public class Algorithms
         return Q;
     }
 
-    public float[] value_iteration(
+    public static float[] value_iteration(
        int[] S,
        int[] A,
        int[] T,
        float[,,] P,
        float[,,] R,
        float[,] Pi,
-       float gamma = 0.99f,
+       float gamma = 0.80f,
        float theta = 0.000001f
         )
     {
@@ -284,24 +284,62 @@ public class Algorithms
                 {
                     foreach (int s2 in S)
                     {
-                        av = P[s, a, s2] * (R[s, a, s2] + gamma * V[s2]);
+                        av = Mathf.Max(P[s, a, s2] * (R[s, a, s2] + gamma * V[s2]), av);
+                        Debug.Log("av : " + av);
                         action_val[a] = av;
                     }
                 }
                 float maxA = 0;
                 foreach (float a_val in action_val)
                 {
+                    //Debug.Log("a_val : " + a_val);
                     if (maxA < a_val)
                     {
                         maxA = a_val;
                     }
                 }
+                Debug.Log("MaxA : " + maxA);
                 V[s] = maxA;
                 float tmp = Mathf.Abs(v - V[s]);
                 if (delta < tmp)
                     delta = tmp;
             }
         }
+
+        int state = 0;
+        float tpm = 0f;
+        av = 0f;
+        int bast_a = 0;
+        foreach (int s in S)
+        {
+            float v = V[s];
+            float[] action_val = new float[A.Length];
+            foreach (int a in A)
+            {
+                foreach (int s2 in S)
+                {
+                    tpm = Mathf.Max(P[s, a, s2] * (R[s, a, s2] + gamma * V[s2]), av);
+                    if (av < tpm)
+                        bast_a = a;
+                    action_val[a] = av;
+                }
+            }
+            float maxA = 0;
+            foreach (float a_val in action_val)
+            {
+                //Debug.Log("a_val : " + a_val);
+                if (maxA < a_val)
+                {
+                    maxA = a_val;
+                }
+            }
+            Debug.Log("MaxA : " + maxA);
+            V[s] = maxA;
+            float tmp = Mathf.Abs(v - V[s]);
+            if (delta < tmp)
+                delta = tmp;
+        }
+
         return V;
     }
 }
